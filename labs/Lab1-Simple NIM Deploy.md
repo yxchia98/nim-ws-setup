@@ -34,18 +34,18 @@
         nvcr.io/nim/meta/llama3-8b-instruct:1.0.0 list-model-profiles
     ```
     Sample Output: <br>
-    ![image](./images/lab1-list-model-profiles.png)
+    ![image](images/lab1-list-model-profiles.png)
 
 <br>
 
 5. Run an instance of NIM.
     
     ```bash
-    export MODEL_REPO=~/llama3-8b-instruct
+    export MODEL_REPO=/home/demouser/llama3-8b-instruct
     docker run -it --rm -d \
         --gpus all \
         --shm-size=16GB \
-        -e NIM_MODEL_NAME=/model-repo \
+        -e NIM_MODEL_NAME=meta/llama3-8b-instruct \
         -v $MODEL_REPO:/model-repo \
         -u $(id -u) \
         -p 8000:8000 \
@@ -126,7 +126,7 @@
     export INPUT_SEQUENCE_STD=10
     export OUTPUT_SEQUENCE_LENGTH=200
     export CONCURRENCY=10
-    export MODEL=meta/llama-3.1-8b-instruct
+    export MODEL=meta/llama3-8b-instruct
     
     cd /workdir
     genai-perf \
