@@ -1,0 +1,52 @@
+export NGC_API_KEY=
+export LOCAL_NIM_CACHE=/opt/nim/.cache
+export IMG_NAME=nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
+
+sudo mkdir -p "$LOCAL_NIM_CACHE"
+sudo chmod -R 777 $LOCAL_NIM_CACHE
+
+docker run --rm --runtime=nvidia --gpus=all \
+-u $(id -u) \
+-e NGC_API_KEY=$NGC_API_KEY \
+$IMG_NAME \
+list-model-profiles
+
+docker run -it --rm --gpus=all \
+-u $(id -u) \
+-e NGC_API_KEY=$NGC_API_KEY \
+-v $LOCAL_NIM_CACHE:/opt/nim/.cache \
+-v /home/demouser/llama3-8b-instruct:/model-repo \
+$IMG_NAME \
+download-to-cache \
+-p 8835c31752fbc67ef658b20a9f78e056914fdef0660206d82f252d62fd96064d
+
+docker run -it --rm --gpus=all \
+-u $(id -u) \
+-e NGC_API_KEY=$NGC_API_KEY \
+-v $LOCAL_NIM_CACHE:/opt/nim/.cache \
+-v /home/demouser/llama3-8b-instruct-lora:/model-repo \
+$IMG_NAME \
+download-to-cache \
+-p 8d3824f766182a754159e88ad5a0bd465b1b4cf69ecf80bd6d6833753e945740
+
+docker run -it --rm --runtime=nvidia --gpus=all \
+-u $(id -u) \
+-e NGC_API_KEY=$NGC_API_KEY \
+-v $LOCAL_NIM_CACHE:/opt/nim/.cache \
+-v /home/demouser/llama3-8b-instruct:/model-repo \
+$IMG_NAME \
+create-model-store \
+-m /model-repo \
+-p 8835c31752fbc67ef658b20a9f78e056914fdef0660206d82f252d62fd96064d
+
+docker run -it --rm --runtime=nvidia --gpus=all \
+-u $(id -u) \
+-e NGC_API_KEY=$NGC_API_KEY \
+-v $LOCAL_NIM_CACHE:/opt/nim/.cache \
+-v /home/demouser/llama3-8b-instruct-lora:/model-repo \
+$IMG_NAME \
+create-model-store \
+-m /model-repo \
+-p 8d3824f766182a754159e88ad5a0bd465b1b4cf69ecf80bd6d6833753e945740
+
+

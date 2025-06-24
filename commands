@@ -1,0 +1,17 @@
+docker run -it --rm \
+--gpus all \
+--shm-size=16GB \
+-u $(id -u) \
+-p 8000:8000 \
+nvcr.io/nim/meta/llama3-8b-instruct:1.0.0 list-model-profiles
+
+
+SYSTEM INFO
+- Free GPUs:
+  -  [2321:10de] (0) NVIDIA H100L-47C [current utilization: 2%]
+MODEL PROFILES
+- Compatible with system and runnable:
+  - 8835c31752fbc67ef658b20a9f78e056914fdef0660206d82f252d62fd96064d (vllm-fp16-tp1)
+  - With LoRA support:
+    - 8d3824f766182a754159e88ad5a0bd465b1b4cf69ecf80bd6d6833753e945740 (vllm-fp16-tp1-lora)
+
