@@ -45,7 +45,8 @@
     docker run -it --rm -d \
         --gpus all \
         --shm-size=16GB \
-        -e NIM_MODEL_NAME=meta/llama3-8b-instruct \
+        -e NIM_MODEL_NAME=/model-repo \
+        -e NGC_API_KEY \
         -v $MODEL_REPO:/model-repo \
         -u $(id -u) \
         -p 8000:8000 \
@@ -77,7 +78,7 @@
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
-        "model": "meta/llama3-8b-instruct",
+        "model": "/model-repo",
         "messages": [{"role":"user", "content":"Write a limerick about the wonders of GPU computing."}],
         "max_tokens": 64
     }' | jq
