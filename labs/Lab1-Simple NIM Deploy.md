@@ -97,7 +97,7 @@
     export HF_TOKENIZER=~/tokenizer
     mkdir -p $HF_TOKENIZER
 
-    cp -ar /mnt/nfs-share/tokenizer/hub $HF_TOKENIZER
+    cp -ar ~/materials/hub $HF_TOKENIZER
     ```    
     
 
@@ -127,7 +127,7 @@
     export INPUT_SEQUENCE_STD=10
     export OUTPUT_SEQUENCE_LENGTH=200
     export CONCURRENCY=10
-    export MODEL=meta/llama3-8b-instruct
+    export MODEL=/model-repo
     
     cd /workdir
     genai-perf \
@@ -143,7 +143,7 @@
         --extra-inputs max_tokens:$OUTPUT_SEQUENCE_LENGTH \
         --extra-inputs min_tokens:$OUTPUT_SEQUENCE_LENGTH \
         --extra-inputs ignore_eos:true \
-        --tokenizer meta-llama/Llama-3.1-8B-Instruct \
+        --tokenizer meta-llama/Meta-Llama-3-8B-Instruct \
         -- \
         -v \
         --max-threads=256

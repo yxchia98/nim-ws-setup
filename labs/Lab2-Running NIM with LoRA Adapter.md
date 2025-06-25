@@ -14,7 +14,7 @@
     export LOCAL_PEFT_DIRECTORY=~/nim/loras
     mkdir -p $LOCAL_PEFT_DIRECTORY
 
-    cp /mnt/nfs-share/adapter/llama3_8b_math.nemo $LOCAL_PEFT_DIRECTORY
+    cp ~/materials/llama3_8b_math.nemo $LOCAL_PEFT_DIRECTORY
     ```
 
 <br>
@@ -27,7 +27,7 @@
     export NIM_PEFT_SOURCE=/tmp/loras
     export CONTAINER_NAME=meta-llama3-8b-instruct
 
-    export MODEL_REPO=/mnt/nfs-share/llama3-8B-Instruct-LoRA
+    export MODEL_REPO=/home/demouser/llama3-8b-instruct-lora
     ```
 
 <br>
@@ -46,7 +46,7 @@
       -v $LOCAL_PEFT_DIRECTORY:/tmp/loras \
       -u $(id -u):$(id -g) \
       -p 8000:8000 \
-      nvcr.io/nim/meta/llama3-8b-instruct:1.0.3
+      nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
     ```
 
     ***Allow approx. 30sec for the model & LoRA adapter to be loaded into GPU Memory.***
