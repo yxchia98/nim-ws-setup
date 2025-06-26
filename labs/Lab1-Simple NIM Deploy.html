@@ -1,229 +1,455 @@
 <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>1&period; Simple NIM Deploy</title>
-            <style>
-/* From extension vscode.github */
+<html>
+<head>
+<title>Lab1-Simple NIM Deploy.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-.vscode-dark img[src$=\#gh-light-mode-only],
-.vscode-light img[src$=\#gh-dark-mode-only],
-.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
-.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
-	display: none;
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
 }
 
 </style>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
-<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+
 <style>
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
-                font-size: 14px;
-                line-height: 1.6;
-            }
-        </style>
-        <style>
-.task-list-item {
-    list-style-type: none;
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
 }
 
-.task-list-item-checkbox {
-    margin-left: -20px;
-    vertical-align: middle;
-    pointer-events: none;
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
 }
 </style>
+
 <style>
-:root {
-  --color-note: #0969da;
-  --color-tip: #1a7f37;
-  --color-warning: #9a6700;
-  --color-severe: #bc4c00;
-  --color-caution: #d1242f;
-  --color-important: #8250df;
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
 }
 
 </style>
-<style>
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-note: #2f81f7;
-    --color-tip: #3fb950;
-    --color-warning: #d29922;
-    --color-severe: #db6d28;
-    --color-caution: #f85149;
-    --color-important: #a371f7;
-  }
-}
 
-</style>
-<style>
-.markdown-alert {
-  padding: 0.5rem 1rem;
-  margin-bottom: 16px;
-  color: inherit;
-  border-left: .25em solid #888;
-}
-
-.markdown-alert>:first-child {
-  margin-top: 0
-}
-
-.markdown-alert>:last-child {
-  margin-bottom: 0
-}
-
-.markdown-alert .markdown-alert-title {
-  display: flex;
-  font-weight: 500;
-  align-items: center;
-  line-height: 1
-}
-
-.markdown-alert .markdown-alert-title .octicon {
-  margin-right: 0.5rem;
-  display: inline-block;
-  overflow: visible !important;
-  vertical-align: text-bottom;
-  fill: currentColor;
-}
-
-.markdown-alert.markdown-alert-note {
-  border-left-color: var(--color-note);
-}
-
-.markdown-alert.markdown-alert-note .markdown-alert-title {
-  color: var(--color-note);
-}
-
-.markdown-alert.markdown-alert-important {
-  border-left-color: var(--color-important);
-}
-
-.markdown-alert.markdown-alert-important .markdown-alert-title {
-  color: var(--color-important);
-}
-
-.markdown-alert.markdown-alert-warning {
-  border-left-color: var(--color-warning);
-}
-
-.markdown-alert.markdown-alert-warning .markdown-alert-title {
-  color: var(--color-warning);
-}
-
-.markdown-alert.markdown-alert-tip {
-  border-left-color: var(--color-tip);
-}
-
-.markdown-alert.markdown-alert-tip .markdown-alert-title {
-  color: var(--color-tip);
-}
-
-.markdown-alert.markdown-alert-caution {
-  border-left-color: var(--color-caution);
-}
-
-.markdown-alert.markdown-alert-caution .markdown-alert-title {
-  color: var(--color-caution);
-}
-
-</style>
-        
-        </head>
-        <body class="vscode-body vscode-light">
-            <h1 id="1-simple-nim-deploy">1. Simple NIM Deploy</h1>
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="1-simple-nim-deploy">1. Simple NIM Deploy</h1>
 <h2 id="11-deploy-nim">1.1 Deploy NIM</h2>
 <ol>
-<li>Go to <a href="https://build.nvidia.com/">https://build.nvidia.com/</a> and login using your NVIDIA account.</li>
+<li>Go to https://build.nvidia.com/ and login using your NVIDIA account.</li>
 </ol>
 <br>
 <ol start="2">
 <li>
 <p>Create an API Key</p>
-<p>Refer to <a href="https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms">https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms</a></p>
+<p>Refer to https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms</p>
 </li>
 </ol>
 <br>
 <ol start="3">
 <li>
-<p>Using the API Key, perform docker login to <a href="http://nvcr.io">nvcr.io</a>.</p>
-<pre><code class="language-bash">$ docker login nvcr.io
+<p>Using the API Key, perform docker login to nvcr.io.</p>
+<pre class="hljs"><code><div>$ docker login nvcr.io
 Username: <span class="hljs-variable">$oauthtoken</span>
 Password: &lt;PASTE_API_KEY_HERE&gt;
-</code></pre>
+</div></code></pre>
 </li>
 </ol>
 <br>
 <ol start="4">
 <li>
 <p>List NIM profiles</p>
-<pre><code class="language-bash">docker run -it --<span class="hljs-built_in">rm</span> \
+<pre class="hljs"><code><div>docker run -it --rm \
     --gpus all \
     --shm-size=16GB \
-    -u $(<span class="hljs-built_in">id</span> -u) \
+    -u $(id -u) \
     -p 8000:8000 \
     nvcr.io/nim/meta/llama3-8b-instruct:1.0.0 list-model-profiles
-</code></pre>
+</div></code></pre>
 <p>Sample Output: <br>
-<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-list-model-profiles.png" alt="image"></p>
+<img src="images/lab1-list-model-profiles.png" alt="image"></p>
 </li>
 </ol>
 <br>
 <ol start="5">
 <li>
 <p>Run an instance of NIM.</p>
-<pre><code class="language-bash">docker run -it --<span class="hljs-built_in">rm</span> -d \
+<pre class="hljs"><code><div>docker run -it --rm -d \
     --gpus all \
     --shm-size=16GB \
     -e NGC_API_KEY \
-    -v <span class="hljs-string">&quot;<span class="hljs-variable">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache&quot;</span> \
-    -u $(<span class="hljs-built_in">id</span> -u) \
+    -v <span class="hljs-string">"<span class="hljs-variable">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache"</span> \
+    -u $(id -u) \
     -p 8000:8000 \
     nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
-</code></pre>
+</div></code></pre>
 <p><em><strong>Allow approx. 30 seconds for the model to be loaded into GPU memory.</strong></em></p>
-<pre><code class="language-bash"><span class="hljs-comment"># Monitor GPU Memory Utilization</span>
+<pre class="hljs"><code><div><span class="hljs-comment"># Monitor GPU Memory Utilization</span>
 watch nvidia-smi
-</code></pre>
+</div></code></pre>
 <p>Sample Output: <br>
-<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-nvidia-smi.png" alt="image"></p>
+<img src="./images/lab1-nvidia-smi.png" alt="image"></p>
 </li>
 </ol>
 <br>
 <ol start="6">
 <li>
 <p>Send test request to NIM</p>
-<pre><code class="language-bash">curl -s -X <span class="hljs-string">&#x27;POST&#x27;</span> \
-<span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/chat/completions&#x27;</span> \
--H <span class="hljs-string">&#x27;accept: application/json&#x27;</span> \
--H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
--d <span class="hljs-string">&#x27;{
-    &quot;model&quot;: &quot;meta/llama3-8b-instruct&quot;,
-    &quot;messages&quot;: [{&quot;role&quot;:&quot;user&quot;, &quot;content&quot;:&quot;Write a limerick about the wonders of GPU computing.&quot;}],
-    &quot;max_tokens&quot;: 64
-}&#x27;</span> | jq
+<pre class="hljs"><code><div>curl -s -X <span class="hljs-string">'POST'</span> \
+<span class="hljs-string">'http://0.0.0.0:8000/v1/chat/completions'</span> \
+-H <span class="hljs-string">'accept: application/json'</span> \
+-H <span class="hljs-string">'Content-Type: application/json'</span> \
+-d <span class="hljs-string">'{
+    "model": "meta/llama3-8b-instruct",
+    "messages": [{"role":"user", "content":"Write a limerick about the wonders of GPU computing."}],
+    "max_tokens": 64
+}'</span> | jq
 
-</code></pre>
-<pre><code class="language-bash">curl -s -X <span class="hljs-string">&#x27;POST&#x27;</span> \
-  <span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/completions&#x27;</span> \
-  -H <span class="hljs-string">&#x27;accept: application/json&#x27;</span> \
-  -H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
-  -d <span class="hljs-string">&#x27;{
-&quot;model&quot;: &quot;meta/llama3-8b-instruct&quot;,
-&quot;prompt&quot;: &quot;John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?&quot;,
-&quot;max_tokens&quot;: 128
-}&#x27;</span> | jq
-</code></pre>
+</div></code></pre>
+<pre class="hljs"><code><div>curl -s -X <span class="hljs-string">'POST'</span> \
+  <span class="hljs-string">'http://0.0.0.0:8000/v1/completions'</span> \
+  -H <span class="hljs-string">'accept: application/json'</span> \
+  -H <span class="hljs-string">'Content-Type: application/json'</span> \
+  -d <span class="hljs-string">'{
+"model": "meta/llama3-8b-instruct",
+"prompt": "John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?",
+"max_tokens": 128
+}'</span> | jq
+</div></code></pre>
 <p>Sample Output: <br>
-<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-test-query.png" alt="image"></p>
+<img src="./images/lab1-test-query.png" alt="image"></p>
 </li>
 </ol>
 <p><br><br><br></p>
@@ -231,11 +457,11 @@ watch nvidia-smi
 <ol>
 <li>
 <p>Copy the Llama 3.1 8B Instruct's tokenizer.</p>
-<pre><code class="language-bash"><span class="hljs-built_in">export</span> HF_TOKENIZER=~/tokenizer
-<span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$HF_TOKENIZER</span>
+<pre class="hljs"><code><div><span class="hljs-built_in">export</span> HF_TOKENIZER=~/tokenizer
+mkdir -p <span class="hljs-variable">$HF_TOKENIZER</span>
 
-<span class="hljs-built_in">cp</span> -ar ~/materials/hub <span class="hljs-variable">$HF_TOKENIZER</span>
-</code></pre>
+cp -ar ~/materials/hub <span class="hljs-variable">$HF_TOKENIZER</span>
+</div></code></pre>
 </li>
 </ol>
 <br>
@@ -245,21 +471,21 @@ watch nvidia-smi
 <blockquote>
 <p>Ensure your NIM is running</p>
 </blockquote>
-<pre><code class="language-bash"><span class="hljs-built_in">export</span> RELEASE=<span class="hljs-string">&quot;24.06&quot;</span> <span class="hljs-comment"># recommend using latest releases in yy.mm format</span>
+<pre class="hljs"><code><div><span class="hljs-built_in">export</span> RELEASE=<span class="hljs-string">"24.06"</span> <span class="hljs-comment"># recommend using latest releases in yy.mm format</span>
 <span class="hljs-built_in">export</span> WORKDIR=~/genai-perf
-<span class="hljs-built_in">mkdir</span> -p <span class="hljs-string">&quot;<span class="hljs-variable">$WORKDIR</span>&quot;</span>
-docker run -it --<span class="hljs-built_in">rm</span> --net=host --gpus=all \
+mkdir -p <span class="hljs-string">"<span class="hljs-variable">$WORKDIR</span>"</span>
+docker run -it --rm --net=host --gpus=all \
     -v <span class="hljs-variable">$WORKDIR</span>:/workdir \
     -v <span class="hljs-variable">$HF_TOKENIZER</span>:/root/.cache/huggingface \
     nvcr.io/nvidia/tritonserver:<span class="hljs-variable">${RELEASE}</span>-py3-sdk
-</code></pre>
+</div></code></pre>
 </li>
 </ol>
 <br>
 <ol start="3">
 <li>
 <p>Run GenAI-Perf (on Triton Server). <em><strong>Allow for approx. 30sec for the script to finish running.</strong></em></p>
-<pre><code class="language-bash"><span class="hljs-built_in">export</span> INPUT_SEQUENCE_LENGTH=200
+<pre class="hljs"><code><div><span class="hljs-built_in">export</span> INPUT_SEQUENCE_LENGTH=200
 <span class="hljs-built_in">export</span> INPUT_SEQUENCE_STD=10
 <span class="hljs-built_in">export</span> OUTPUT_SEQUENCE_LENGTH=200
 <span class="hljs-built_in">export</span> CONCURRENCY=10
@@ -283,17 +509,17 @@ genai-perf \
     -- \
     -v \
     --max-threads=256
-</code></pre>
+</div></code></pre>
 <p>Sample Output: <br>
-<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-genai-perf.png" alt="image"></p>
+<img src="./images/lab1-genai-perf.png" alt="image"></p>
 </li>
 </ol>
 <br>
 <ol start="4">
 <li>
 <p>Exit out of the container.</p>
-<pre><code class="language-bash"><span class="hljs-built_in">exit</span>
-</code></pre>
+<pre class="hljs"><code><div><span class="hljs-built_in">exit</span>
+</div></code></pre>
 </li>
 </ol>
 <br>
@@ -301,11 +527,9 @@ genai-perf \
 <p><strong>ADDITIONAL READING</strong></p>
 <p>Performing Benchmark Sweep for various use cases:</p>
 <ul>
-<li><a href="https://docs.nvidia.com/nim/benchmarking/llm/latest/step-by-step.html#step-4-sweeping-through-a-number-of-use-cases">https://docs.nvidia.com/nim/benchmarking/llm/latest/step-by-step.html#step-4-sweeping-through-a-number-of-use-cases</a></li>
+<li>https://docs.nvidia.com/nim/benchmarking/llm/latest/step-by-step.html#step-4-sweeping-through-a-number-of-use-cases</li>
 </ul>
 </blockquote>
 
-            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
-            
-        </body>
-        </html>
+</body>
+</html>
