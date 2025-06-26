@@ -50,3 +50,12 @@ create-model-store \
 -p 8d3824f766182a754159e88ad5a0bd465b1b4cf69ecf80bd6d6833753e945740
 
 
+docker run -it --rm -d \
+    --gpus all \
+    --shm-size=16GB \
+    -e NGC_API_KEY \
+    -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
+    -u $(id -u) \
+    -p 8000:8000 \
+    nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
+

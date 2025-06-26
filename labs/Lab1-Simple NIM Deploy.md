@@ -52,6 +52,16 @@
         -p 8000:8000 \
         nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
     ```
+    ```bash
+    docker run -it --rm -d \
+        --gpus all \
+        --shm-size=16GB \
+        -e NGC_API_KEY \
+        -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
+        -u $(id -u) \
+        -p 8000:8000 \
+        nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
+    ```
 
     ***Allow approx. 30 seconds for the model to be loaded into GPU memory.***
     ```bash
@@ -84,6 +94,20 @@
     }' | jq
     
     ```
+
+    ```bash
+    curl -s -X 'POST' \
+    'http://0.0.0.0:8000/v1/chat/completions' \
+    -H 'accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "model": "meta/llama3-8b-instruct",
+        "messages": [{"role":"user", "content":"Write a limerick about the wonders of GPU computing."}],
+        "max_tokens": 64
+    }' | jq
+    
+    ```
+
     Sample Output: <br>
     ![image](./images/lab1-test-query.png)
 
