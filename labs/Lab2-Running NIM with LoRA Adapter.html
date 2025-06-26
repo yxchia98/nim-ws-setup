@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>2&period; Running NIM with LoRA Adapter</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="2-running-nim-with-lora-adapter">2. Running NIM with LoRA Adapter</h1>
+<ol>
+<li>
+<p>Stop ALL docker containers that are running</p>
+<pre><code class="language-bash">docker stop $(docker ps -q)
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="2">
+<li>
+<p>Copy the LoRA adapter over to local directory at <code>~/nim/loras</code></p>
+<pre><code class="language-bash"><span class="hljs-built_in">export</span> LOCAL_PEFT_DIRECTORY=~/nim/loras
+<span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>
+
+<span class="hljs-built_in">cp</span> ~/materials/llama3_8b_math.nemo <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="3">
+<li>
+<p>Set these configurations</p>
+<pre><code class="language-bash"><span class="hljs-built_in">export</span> NIM_PEFT_REFRESH_INTERVAL=3600
+
+<span class="hljs-built_in">export</span> NIM_PEFT_SOURCE=/tmp/loras
+<span class="hljs-built_in">export</span> CONTAINER_NAME=meta-llama3-8b-instruct
+
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="4">
+<li>
+<p>Run NIM with LoRA adapter.</p>
+<pre><code class="language-bash">docker run -it --<span class="hljs-built_in">rm</span> -d --name=<span class="hljs-variable">$CONTAINER_NAME</span> \
+  --gpus all \
+  --network=host \
+  --shm-size=16GB \
+  -e NIM_MODEL_NAME=meta/llama3-8b-instruct \
+  -e NIM_PEFT_SOURCE \
+  -e NIM_PEFT_REFRESH_INTERVAL \
+  -v <span class="hljs-string">&quot;<span class="hljs-variable">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache&quot;</span> \
+  -v <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>:/tmp/loras \
+  -u $(<span class="hljs-built_in">id</span> -u):$(<span class="hljs-built_in">id</span> -g) \
+  -p 8000:8000 \
+  nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
+</code></pre>
+<p><em><strong>Allow approx. 30sec for the model &amp; LoRA adapter to be loaded into GPU Memory.</strong></em></p>
+<pre><code class="language-bash"><span class="hljs-comment"># Monitor GPU Memory Utilization</span>
+watch nvidia-smi
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="5">
+<li>
+<p>Verify</p>
+<pre><code class="language-bash">curl -s -X GET <span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/models&#x27;</span> | jq
+</code></pre>
+<pre><code class="language-bash">curl -s -X <span class="hljs-string">&#x27;POST&#x27;</span> \
+  <span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/completions&#x27;</span> \
+  -H <span class="hljs-string">&#x27;accept: application/json&#x27;</span> \
+  -H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
+  -d <span class="hljs-string">&#x27;{
+&quot;model&quot;: &quot;meta/llama3-8b-instruct&quot;,
+&quot;prompt&quot;: &quot;John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?&quot;,
+&quot;max_tokens&quot;: 128
+}&#x27;</span> | jq
+</code></pre>
+</li>
+</ol>
+<p><br><br></p>
+<h2 id="fyi">FYI</h2>
+<h3 id="without-lora">WITHOUT LoRA</h3>
+<p><img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab2-without-lora.png" alt="image"></p>
+<br>
+<h3 id="with-lora">WITH LoRA</h3>
+<p><img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab2-with-lora.png" alt="image"></p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>

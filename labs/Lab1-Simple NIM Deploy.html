@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>1&period; Simple NIM Deploy</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="1-simple-nim-deploy">1. Simple NIM Deploy</h1>
+<h2 id="11-deploy-nim">1.1 Deploy NIM</h2>
+<ol>
+<li>Go to <a href="https://build.nvidia.com/">https://build.nvidia.com/</a> and login using your NVIDIA account.</li>
+</ol>
+<br>
+<ol start="2">
+<li>
+<p>Create an API Key</p>
+<p>Refer to <a href="https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms">https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms</a></p>
+</li>
+</ol>
+<br>
+<ol start="3">
+<li>
+<p>Using the API Key, perform docker login to <a href="http://nvcr.io">nvcr.io</a>.</p>
+<pre><code class="language-bash">$ docker login nvcr.io
+Username: <span class="hljs-variable">$oauthtoken</span>
+Password: &lt;PASTE_API_KEY_HERE&gt;
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="4">
+<li>
+<p>List NIM profiles</p>
+<pre><code class="language-bash">docker run -it --<span class="hljs-built_in">rm</span> \
+    --gpus all \
+    --shm-size=16GB \
+    -u $(<span class="hljs-built_in">id</span> -u) \
+    -p 8000:8000 \
+    nvcr.io/nim/meta/llama3-8b-instruct:1.0.0 list-model-profiles
+</code></pre>
+<p>Sample Output: <br>
+<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-list-model-profiles.png" alt="image"></p>
+</li>
+</ol>
+<br>
+<ol start="5">
+<li>
+<p>Run an instance of NIM.</p>
+<pre><code class="language-bash">docker run -it --<span class="hljs-built_in">rm</span> -d \
+    --gpus all \
+    --shm-size=16GB \
+    -e NGC_API_KEY \
+    -v <span class="hljs-string">&quot;<span class="hljs-variable">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache&quot;</span> \
+    -u $(<span class="hljs-built_in">id</span> -u) \
+    -p 8000:8000 \
+    nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
+</code></pre>
+<p><em><strong>Allow approx. 30 seconds for the model to be loaded into GPU memory.</strong></em></p>
+<pre><code class="language-bash"><span class="hljs-comment"># Monitor GPU Memory Utilization</span>
+watch nvidia-smi
+</code></pre>
+<p>Sample Output: <br>
+<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-nvidia-smi.png" alt="image"></p>
+</li>
+</ol>
+<br>
+<ol start="6">
+<li>
+<p>Send test request to NIM</p>
+<pre><code class="language-bash">curl -s -X <span class="hljs-string">&#x27;POST&#x27;</span> \
+<span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/chat/completions&#x27;</span> \
+-H <span class="hljs-string">&#x27;accept: application/json&#x27;</span> \
+-H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
+-d <span class="hljs-string">&#x27;{
+    &quot;model&quot;: &quot;meta/llama3-8b-instruct&quot;,
+    &quot;messages&quot;: [{&quot;role&quot;:&quot;user&quot;, &quot;content&quot;:&quot;Write a limerick about the wonders of GPU computing.&quot;}],
+    &quot;max_tokens&quot;: 64
+}&#x27;</span> | jq
+
+</code></pre>
+<pre><code class="language-bash">curl -s -X <span class="hljs-string">&#x27;POST&#x27;</span> \
+  <span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/completions&#x27;</span> \
+  -H <span class="hljs-string">&#x27;accept: application/json&#x27;</span> \
+  -H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
+  -d <span class="hljs-string">&#x27;{
+&quot;model&quot;: &quot;meta/llama3-8b-instruct&quot;,
+&quot;prompt&quot;: &quot;John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?&quot;,
+&quot;max_tokens&quot;: 128
+}&#x27;</span> | jq
+</code></pre>
+<p>Sample Output: <br>
+<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-test-query.png" alt="image"></p>
+</li>
+</ol>
+<p><br><br><br></p>
+<h2 id="12-run-genai-perf-benchmark-on-your-nim">1.2 Run GenAI-Perf Benchmark on your NIM</h2>
+<ol>
+<li>
+<p>Copy the Llama 3.1 8B Instruct's tokenizer.</p>
+<pre><code class="language-bash"><span class="hljs-built_in">export</span> HF_TOKENIZER=~/tokenizer
+<span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$HF_TOKENIZER</span>
+
+<span class="hljs-built_in">cp</span> -ar ~/materials/hub <span class="hljs-variable">$HF_TOKENIZER</span>
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="2">
+<li>
+<p>Export Variables and run Triton Server</p>
+<blockquote>
+<p>Ensure your NIM is running</p>
+</blockquote>
+<pre><code class="language-bash"><span class="hljs-built_in">export</span> RELEASE=<span class="hljs-string">&quot;24.06&quot;</span> <span class="hljs-comment"># recommend using latest releases in yy.mm format</span>
+<span class="hljs-built_in">export</span> WORKDIR=~/genai-perf
+<span class="hljs-built_in">mkdir</span> -p <span class="hljs-string">&quot;<span class="hljs-variable">$WORKDIR</span>&quot;</span>
+docker run -it --<span class="hljs-built_in">rm</span> --net=host --gpus=all \
+    -v <span class="hljs-variable">$WORKDIR</span>:/workdir \
+    -v <span class="hljs-variable">$HF_TOKENIZER</span>:/root/.cache/huggingface \
+    nvcr.io/nvidia/tritonserver:<span class="hljs-variable">${RELEASE}</span>-py3-sdk
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="3">
+<li>
+<p>Run GenAI-Perf (on Triton Server). <em><strong>Allow for approx. 30sec for the script to finish running.</strong></em></p>
+<pre><code class="language-bash"><span class="hljs-built_in">export</span> INPUT_SEQUENCE_LENGTH=200
+<span class="hljs-built_in">export</span> INPUT_SEQUENCE_STD=10
+<span class="hljs-built_in">export</span> OUTPUT_SEQUENCE_LENGTH=200
+<span class="hljs-built_in">export</span> CONCURRENCY=10
+<span class="hljs-built_in">export</span> MODEL=meta/llama3-8b-instruct
+
+<span class="hljs-built_in">cd</span> /workdir
+genai-perf \
+    -m <span class="hljs-variable">$MODEL</span> \
+    --endpoint-type chat \
+    --service-kind openai \
+    --streaming \
+    -u localhost:8000 \
+    --synthetic-input-tokens-mean <span class="hljs-variable">$INPUT_SEQUENCE_LENGTH</span> \
+    --synthetic-input-tokens-stddev <span class="hljs-variable">$INPUT_SEQUENCE_STD</span> \
+    --concurrency <span class="hljs-variable">$CONCURRENCY</span> \
+    --output-tokens-mean <span class="hljs-variable">$OUTPUT_SEQUENCE_LENGTH</span> \
+    --extra-inputs max_tokens:<span class="hljs-variable">$OUTPUT_SEQUENCE_LENGTH</span> \
+    --extra-inputs min_tokens:<span class="hljs-variable">$OUTPUT_SEQUENCE_LENGTH</span> \
+    --extra-inputs ignore_eos:<span class="hljs-literal">true</span> \
+    --tokenizer meta-llama/Meta-Llama-3-8B-Instruct \
+    -- \
+    -v \
+    --max-threads=256
+</code></pre>
+<p>Sample Output: <br>
+<img src="file:///c:\Users\YiXuan_Chia\OneDrive - Dell Technologies\General - CNA Tech and COE\Tech Team\Kitchen\WORKSHOPS\NIMs\NIMs Workshop (HOL)\nim-ws-setup\labs\images\lab1-genai-perf.png" alt="image"></p>
+</li>
+</ol>
+<br>
+<ol start="4">
+<li>
+<p>Exit out of the container.</p>
+<pre><code class="language-bash"><span class="hljs-built_in">exit</span>
+</code></pre>
+</li>
+</ol>
+<br>
+<blockquote>
+<p><strong>ADDITIONAL READING</strong></p>
+<p>Performing Benchmark Sweep for various use cases:</p>
+<ul>
+<li><a href="https://docs.nvidia.com/nim/benchmarking/llm/latest/step-by-step.html#step-4-sweeping-through-a-number-of-use-cases">https://docs.nvidia.com/nim/benchmarking/llm/latest/step-by-step.html#step-4-sweeping-through-a-number-of-use-cases</a></li>
+</ul>
+</blockquote>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
