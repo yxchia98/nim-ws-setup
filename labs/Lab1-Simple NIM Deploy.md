@@ -72,13 +72,11 @@
 
 ## 1.2 Run GenAI-Perf Benchmark on your NIM
 
-1. Copy the Llama 3.1 8B Instruct's tokenizer.
+1. To run GenAI-Perf, we will need the model tokenizer. We have already included this in the current workspace.
     
     ```bash
     export HF_TOKENIZER=~/tokenizer
-    mkdir -p $HF_TOKENIZER
-
-    cp -ar ~/materials/hub $HF_TOKENIZER
+    ls $HF_TOKENIZER
     ```    
     
 
