@@ -20,7 +20,7 @@
 2. Run an instance of NIM.
     
     ```bash
-    export CONTAINER_NAME=meta-llama3-8b-instruct-lora
+    export CONTAINER_NAME=meta-llama3-8b-instruct
     export MODEL_REPO=/home/demouser/llama3-8b-instruct
     docker run -it --rm -d --name=$CONTAINER_NAME \
         --gpus all \
