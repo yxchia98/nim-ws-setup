@@ -25,8 +25,9 @@
     export NIM_PEFT_REFRESH_INTERVAL=3600
     
     export NIM_PEFT_SOURCE=/tmp/loras
-    export CONTAINER_NAME=meta-llama3-8b-instruct
+    export CONTAINER_NAME=meta-llama3-8b-instruct-lora
 
+    export MODEL_REPO=/home/demouser/llama3-8b-instruct-lora
     ```
 
 <br>
@@ -38,10 +39,11 @@
       --gpus all \
       --network=host \
       --shm-size=16GB \
-      -e NIM_MODEL_NAME=meta/llama3-8b-instruct \
+      -e NIM_MODEL_NAME=/model-repo \
+      -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
+      -v $MODEL_REPO:/model-repo \
       -e NIM_PEFT_SOURCE \
       -e NIM_PEFT_REFRESH_INTERVAL \
-      -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
       -v $LOCAL_PEFT_DIRECTORY:/tmp/loras \
       -u $(id -u):$(id -g) \
       -p 8000:8000 \
@@ -68,7 +70,7 @@
       -H 'accept: application/json' \
       -H 'Content-Type: application/json' \
       -d '{
-    "model": "meta/llama3-8b-instruct",
+    "model": "/model-repo",
     "prompt": "John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?",
     "max_tokens": 128
     }' | jq

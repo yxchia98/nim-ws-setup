@@ -39,15 +39,13 @@
 <br>
 
 5. Run an instance of NIM.
-    
+
     ```bash
-    export MODEL_REPO=/home/demouser/llama3-8b-instruct
     docker run -it --rm -d \
         --gpus all \
         --shm-size=16GB \
-        -e NIM_MODEL_NAME=/model-repo \
         -e NGC_API_KEY \
-        -v $MODEL_REPO:/model-repo \
+        -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
         -u $(id -u) \
         -p 8000:8000 \
         nvcr.io/nim/meta/llama3-8b-instruct:1.0.0
@@ -64,26 +62,31 @@
 <br>
 
 6. Send test request to NIM
-    
-    ```bash
-    curl -s -X GET 'http://0.0.0.0:8000/v1/models' | jq
-    ```
-    Sample Output: <br>
-    ![image](./images/lab1-list-running-models.png)
 
-    
     ```bash
     curl -s -X 'POST' \
     'http://0.0.0.0:8000/v1/chat/completions' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
-        "model": "/model-repo",
+        "model": "meta/llama3-8b-instruct",
         "messages": [{"role":"user", "content":"Write a limerick about the wonders of GPU computing."}],
         "max_tokens": 64
     }' | jq
     
     ```
+    ```bash
+    curl -s -X 'POST' \
+      'http://0.0.0.0:8000/v1/completions' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: application/json' \
+      -d '{
+    "model": "meta/llama3-8b-instruct",
+    "prompt": "John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?",
+    "max_tokens": 128
+    }' | jq
+    ```
+
 
     Sample Output: <br>
     ![image](./images/lab1-test-query.png)
@@ -128,7 +131,7 @@
     export INPUT_SEQUENCE_STD=10
     export OUTPUT_SEQUENCE_LENGTH=200
     export CONCURRENCY=10
-    export MODEL=/model-repo
+    export MODEL=meta/llama3-8b-instruct
     
     cd /workdir
     genai-perf \
