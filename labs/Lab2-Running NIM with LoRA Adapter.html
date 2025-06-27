@@ -149,12 +149,8 @@
 </ol>
 <br>
 <ol start="2">
-<li>
-<p>Copy the LoRA adapter over to local directory at <code>~/nim/loras</code></p>
-<pre><code class="language-bash"><span class="hljs-built_in">export</span> LOCAL_PEFT_DIRECTORY=~/nim/loras
-<span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>
-
-<span class="hljs-built_in">cp</span> ~/materials/llama3_8b_math.nemo <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>
+<li>We have already included a LoRa adapter within the current workspace. The adapter file can be found under the <code>~/nim/loras</code> folder:<pre><code class="language-bash"><span class="hljs-built_in">export</span> LOCAL_PEFT_DIRECTORY=~/nim/loras
+<span class="hljs-built_in">ls</span> LOCAL_PEFT_DIRECTORY
 </code></pre>
 </li>
 </ol>

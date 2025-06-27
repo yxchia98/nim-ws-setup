@@ -8,13 +8,10 @@
 
 <br>
 
-2. Copy the LoRA adapter over to local directory at `~/nim/loras` 
-
+2. We have already included a LoRa adapter within the current workspace. The adapter file can be found under the `~/nim/loras` folder:
     ```bash
     export LOCAL_PEFT_DIRECTORY=~/nim/loras
-    mkdir -p $LOCAL_PEFT_DIRECTORY
-
-    cp ~/materials/llama3_8b_math.nemo $LOCAL_PEFT_DIRECTORY
+    ls LOCAL_PEFT_DIRECTORY
     ```
 
 <br>

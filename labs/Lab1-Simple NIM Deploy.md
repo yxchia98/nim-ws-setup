@@ -2,28 +2,7 @@
 
 ## 1.1 Deploy NIM
 
-
-1. Go to https://build.nvidia.com/ and login using your NVIDIA account.
-
-<br>
-
-2. Create an API Key
-
-    Refer to https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms
-
-<br>
-
-3. Using the API Key, perform docker login to nvcr.io.
-    
-    ```bash
-    $ docker login nvcr.io
-    Username: $oauthtoken
-    Password: <PASTE_API_KEY_HERE>
-    ```
-
-<br>
-
-4. List NIM profiles
+1. List NIM profiles
     
     ```bash    
     docker run -it --rm \
@@ -38,11 +17,12 @@
 
 <br>
 
-5. Run an instance of NIM.
+2. Run an instance of NIM.
     
     ```bash
+    export CONTAINER_NAME=meta-llama3-8b-instruct-lora
     export MODEL_REPO=/home/demouser/llama3-8b-instruct
-    docker run -it --rm -d \
+    docker run -it --rm -d --name=$CONTAINER_NAME \
         --gpus all \
         --shm-size=16GB \
         -e NIM_MODEL_NAME=/model-repo \
@@ -63,7 +43,7 @@
 
 <br>
 
-6. Send test request to NIM
+3. Send test request to NIM
     
     ```bash
     curl -s -X GET 'http://0.0.0.0:8000/v1/models' | jq
@@ -160,6 +140,21 @@
     exit
     ```
 
+<br>
+
+5. Before we go to the next lab, lets test how well it works with math questions:
+    
+    ```bash
+    curl -s -X 'POST' \
+      'http://0.0.0.0:8000/v1/completions' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: application/json' \
+      -d '{
+    "model": "/model-repo",
+    "prompt": "John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?",
+    "max_tokens": 128
+    }' | jq
+    ```
 <br>
 
 >**ADDITIONAL READING**

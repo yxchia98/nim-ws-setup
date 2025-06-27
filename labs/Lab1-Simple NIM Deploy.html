@@ -142,27 +142,6 @@
             <h1 id="1-simple-nim-deploy">1. Simple NIM Deploy</h1>
 <h2 id="11-deploy-nim">1.1 Deploy NIM</h2>
 <ol>
-<li>Go to <a href="https://build.nvidia.com/">https://build.nvidia.com/</a> and login using your NVIDIA account.</li>
-</ol>
-<br>
-<ol start="2">
-<li>
-<p>Create an API Key</p>
-<p>Refer to <a href="https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms">https://docs.nvidia.com/nim/large-language-models/latest/getting-started.html#launch-nvidia-nim-for-llms</a></p>
-</li>
-</ol>
-<br>
-<ol start="3">
-<li>
-<p>Using the API Key, perform docker login to <a href="http://nvcr.io">nvcr.io</a>.</p>
-<pre><code class="language-bash">$ docker login nvcr.io
-Username: <span class="hljs-variable">$oauthtoken</span>
-Password: &lt;PASTE_API_KEY_HERE&gt;
-</code></pre>
-</li>
-</ol>
-<br>
-<ol start="4">
 <li>
 <p>List NIM profiles</p>
 <pre><code class="language-bash">docker run -it --<span class="hljs-built_in">rm</span> \
@@ -177,11 +156,12 @@ Password: &lt;PASTE_API_KEY_HERE&gt;
 </li>
 </ol>
 <br>
-<ol start="5">
+<ol start="2">
 <li>
 <p>Run an instance of NIM.</p>
-<pre><code class="language-bash"><span class="hljs-built_in">export</span> MODEL_REPO=/home/demouser/llama3-8b-instruct
-docker run -it --<span class="hljs-built_in">rm</span> -d \
+<pre><code class="language-bash"><span class="hljs-built_in">export</span> CONTAINER_NAME=meta-llama3-8b-instruct-lora
+<span class="hljs-built_in">export</span> MODEL_REPO=/home/demouser/llama3-8b-instruct
+docker run -it --<span class="hljs-built_in">rm</span> -d --name=<span class="hljs-variable">$CONTAINER_NAME</span> \
     --gpus all \
     --shm-size=16GB \
     -e NIM_MODEL_NAME=/model-repo \
@@ -200,7 +180,7 @@ watch nvidia-smi
 </li>
 </ol>
 <br>
-<ol start="6">
+<ol start="3">
 <li>
 <p>Send test request to NIM</p>
 <pre><code class="language-bash">curl -s -X GET <span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/models&#x27;</span> | jq
@@ -289,6 +269,22 @@ genai-perf \
 <li>
 <p>Exit out of the container.</p>
 <pre><code class="language-bash"><span class="hljs-built_in">exit</span>
+</code></pre>
+</li>
+</ol>
+<br>
+<ol start="5">
+<li>
+<p>Before we go to the next lab, lets test how well it works with math questions:</p>
+<pre><code class="language-bash">curl -s -X <span class="hljs-string">&#x27;POST&#x27;</span> \
+  <span class="hljs-string">&#x27;http://0.0.0.0:8000/v1/completions&#x27;</span> \
+  -H <span class="hljs-string">&#x27;accept: application/json&#x27;</span> \
+  -H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
+  -d <span class="hljs-string">&#x27;{
+&quot;model&quot;: &quot;/model-repo&quot;,
+&quot;prompt&quot;: &quot;John buys 10 packs of magic cards. Each pack has 20 cards and 1/4 of those cards are uncommon. How many uncommon cards did he get?&quot;,
+&quot;max_tokens&quot;: 128
+}&#x27;</span> | jq
 </code></pre>
 </li>
 </ol>
