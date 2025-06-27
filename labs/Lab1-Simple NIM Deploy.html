@@ -432,11 +432,9 @@ watch nvidia-smi
 <h2 id="12-run-genai-perf-benchmark-on-your-nim">1.2 Run GenAI-Perf Benchmark on your NIM</h2>
 <ol>
 <li>
-<p>Copy the Llama 3.1 8B Instruct's tokenizer.</p>
+<p>To run GenAI-Perf, we will need the model tokenizer. We have already included this in the current workspace.</p>
 <pre class="hljs"><code><div><span class="hljs-built_in">export</span> HF_TOKENIZER=~/tokenizer
-mkdir -p <span class="hljs-variable">$HF_TOKENIZER</span>
-
-cp -ar ~/materials/hub <span class="hljs-variable">$HF_TOKENIZER</span>
+ls <span class="hljs-variable">$HF_TOKENIZER</span>
 </div></code></pre>
 </li>
 </ol>
