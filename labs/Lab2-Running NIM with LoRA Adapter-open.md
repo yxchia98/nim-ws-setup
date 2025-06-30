@@ -41,6 +41,7 @@
       -e NIM_MODEL_NAME=meta/llama3-8b-instruct \
       -e NIM_PEFT_SOURCE \
       -e NIM_PEFT_REFRESH_INTERVAL \
+      -e NGC_API_KEY \
       -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
       -v $LOCAL_PEFT_DIRECTORY:/tmp/loras \
       -u $(id -u):$(id -g) \

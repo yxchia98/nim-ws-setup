@@ -37,10 +37,11 @@
       --network=host \
       --shm-size=16GB \
       -e NIM_MODEL_NAME=/model-repo \
+      -e NIM_PEFT_SOURCE \
+      -e NGC_API_KEY \
+      -e NIM_PEFT_REFRESH_INTERVAL \
       -v "$LOCAL_NIM_CACHE:/opt/nim/.cache" \
       -v $MODEL_REPO:/model-repo \
-      -e NIM_PEFT_SOURCE \
-      -e NIM_PEFT_REFRESH_INTERVAL \
       -v $LOCAL_PEFT_DIRECTORY:/tmp/loras \
       -u $(id -u):$(id -g) \
       -p 8000:8000 \

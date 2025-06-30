@@ -402,10 +402,11 @@ ls LOCAL_PEFT_DIRECTORY
   --network=host \
   --shm-size=16GB \
   -e NIM_MODEL_NAME=/model-repo \
+  -e NIM_PEFT_SOURCE \
+  -e NGC_API_KEY \
+  -e NIM_PEFT_REFRESH_INTERVAL \
   -v <span class="hljs-string">"<span class="hljs-variable">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache"</span> \
   -v <span class="hljs-variable">$MODEL_REPO</span>:/model-repo \
-  -e NIM_PEFT_SOURCE \
-  -e NIM_PEFT_REFRESH_INTERVAL \
   -v <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>:/tmp/loras \
   -u $(id -u):$(id -g) \
   -p 8000:8000 \
