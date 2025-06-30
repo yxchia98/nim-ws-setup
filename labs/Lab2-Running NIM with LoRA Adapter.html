@@ -405,7 +405,6 @@ ls <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>
   -e NIM_PEFT_SOURCE \
   -e NGC_API_KEY \
   -e NIM_PEFT_REFRESH_INTERVAL \
-  -v <span class="hljs-string">"<span class="hljs-variable">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache"</span> \
   -v <span class="hljs-variable">$MODEL_REPO</span>:/model-repo \
   -v <span class="hljs-variable">$LOCAL_PEFT_DIRECTORY</span>:/tmp/loras \
   -u $(id -u):$(id -g) \
