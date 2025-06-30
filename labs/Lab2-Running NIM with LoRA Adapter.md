@@ -11,7 +11,7 @@
 2. We have already included a LoRa adapter within the current workspace. The adapter file can be found under the `~/nim/loras` folder:
     ```bash
     export LOCAL_PEFT_DIRECTORY=~/nim/loras
-    ls LOCAL_PEFT_DIRECTORY
+    ls $LOCAL_PEFT_DIRECTORY
     ```
 
 <br>
